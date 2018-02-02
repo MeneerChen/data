@@ -10,23 +10,17 @@ namespace data.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IProvideSensorData _sensorData;
+
+        public HomeController(IProvideSensorData sensorData)
         {
-            return View();
+            _sensorData = sensorData;
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Index()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            var sensorDataEntities = await _sensorData.ProvideAsync(); 
+            return View(sensorDataEntities);
         }
 
         public IActionResult Error()

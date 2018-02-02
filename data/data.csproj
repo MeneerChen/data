@@ -2,10 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RuntimeIdentifiers>ubuntu.16.04-arm</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Controllers\DataController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+	<PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="1.1.9" />
   </ItemGroup>
 
   <ItemGroup>

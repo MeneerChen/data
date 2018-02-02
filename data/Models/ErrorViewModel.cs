@@ -1,5 +1,3 @@
-using System;
-
 namespace data.Models
 {
     public class ErrorViewModel

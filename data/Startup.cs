@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +20,21 @@ namespace data
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHandleDataGeneration, DataGenerationHandler>();
+            services.AddSingleton<IProvideSqliteConnections, SqliteConnectionProvider>();
+            services.AddSingleton<ISqliteSettings, ProgramSettings>();
+            services.AddSingleton<IProvideSensorData, SensorDataRepository>();
+            services.AddSingleton<IGenerateSensorData, SensorDataRepository>();
+            services.AddSingleton<IProvideLastSensorDataValue, SensorDataRepository>();
+            services.AddSingleton<IStartupTask, EnsureTableTask>();
             services.AddMvc();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var startupTasks = serviceProvider.GetServices<IStartupTask>();
+            foreach (var startupTask in startupTasks)
+            {
+                startupTask.Run();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +55,8 @@ namespace data
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
