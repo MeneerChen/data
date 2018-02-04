@@ -3,17 +3,27 @@ $(document).ready(function() {
     loadSensorData();
 });
 
-function loadSensorData() {
-    console.log("running loadSensorData");
-    if ($("#sensorDataCheckbox").is(":checked")) {
-        $("#sensorData").load("Home/Random");
-    }
-    var from = +$("#sensorDataRandomFrom").val();
-    var to = +$("#sensorDataRandomTo").val();
-    var random = randomIntFromInterval(from, to);
-    window.setTimeout(loadSensorData, random * 1000);
+function loadSensorData(guid) {
+    console.log("loadSensorData");
+    $.get("Home/GetRivision",
+        function(rivision) {
+            if (guid !== rivision)
+                $("#sensorData").load("Home/GetSensorData");
+
+            window.setTimeout(loadSensorData, 1000, rivision);
+        });
 }
 
-function randomIntFromInterval(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+
+function setAutoGenerate() {
+    var switchValue = $("#sensorDataCheckbox").is(":checked");
+    var from = +$("#sensorDataRandomFrom").val();
+    var to = +$("#sensorDataRandomTo").val();
+    $.ajax("/Home/SetAutoGenerate", 
+        { 
+            type: "POST", 
+            data: JSON.stringify({ SwitchValue: switchValue, FromRandom: from, ToRandom: to }), 
+            contentType : "application/json",
+            dataType: "json"
+        });
 }

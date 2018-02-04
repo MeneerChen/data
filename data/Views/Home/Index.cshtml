@@ -1,4 +1,5 @@
-﻿@{
+﻿@model bool
+@{
     ViewData["Title"] = "Home Page";
 }
 <br>
@@ -11,14 +12,14 @@
     <button type="button" class="btn btn-warning btn-lg" onclick="var action = function() { location.href = '@Url.Action("Belly", "Data")'; };action();">Belly</button>
     <br>
     <br>
-    <input type="checkbox" id="sensorDataCheckbox" checked data-toggle="toggle">
-    <span>
+    <div class="form-inline">
+        <input type="checkbox" id="sensorDataCheckbox" value="@Model" data-toggle="toggle" onchange="setAutoGenerate()">
         Generate sensor data automatically every
-        <input class="input-sm" type="number" id="sensorDataRandomFrom" value="1">
+        <input class="form-control" type="number" id="sensorDataRandomFrom" value="1" onchange="setAutoGenerate()">
         to
-        <input class="input-sm" type="number" id="sensorDataRandomTo" value="1">
+        <input class="form-control" type="number" id="sensorDataRandomTo" value="1" onchange="setAutoGenerate()">
         seconds
-    </span>
+    </div>
 </div>
 <br>
 <br>
