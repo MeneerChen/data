@@ -1,0 +1,48 @@
+﻿@using System.ComponentModel
+@model IEnumerable<data.Models.SensorDataEntity>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Data</th>
+            <th>Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (Model.FirstOrDefault()?.SensorDataId.Equals(item.SensorDataId) ?? false)
+            {
+                <tr class="bg-success">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorDataId.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorData.SensorDataValue.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorData.SensorDataCreated)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorDataId.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorData.SensorDataValue.Value)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SensorData.SensorDataCreated)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -9,10 +9,12 @@ namespace data.Controllers
     public class DataController : Controller
     {
         private readonly IHandleDataGeneration _handleDataGeneration;
+        private readonly IProvideRandomData _randomData;
 
-        public DataController(IHandleDataGeneration handleDataGeneration)
+        public DataController(IHandleDataGeneration handleDataGeneration, IProvideRandomData randomData)
         {
             _handleDataGeneration = handleDataGeneration;
+            _randomData = randomData;
         }
         // GET: /<controller>/
         public async Task<IActionResult> Outofbed()
@@ -45,5 +47,6 @@ namespace data.Controllers
             await _handleDataGeneration.GenerateAsync(data);
             return Redirect("/Home/Index");
         }
+
     }
 }

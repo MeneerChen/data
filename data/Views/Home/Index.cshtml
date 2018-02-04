@@ -1,6 +1,4 @@
-﻿@model IEnumerable<data.Models.SensorDataEntity>
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 <br>
@@ -11,50 +9,21 @@
     <button type="button" class="btn btn-success btn-lg" onclick="var action = function() { location.href = '@Url.Action("Rightside", "Data")'; };action();">Rightside</button>
     <button type="button" class="btn btn-info btn-lg" onclick="var action = function() { location.href = '@Url.Action("Back", "Data")'; };action();">Back</button>
     <button type="button" class="btn btn-warning btn-lg" onclick="var action = function() { location.href = '@Url.Action("Belly", "Data")'; };action();">Belly</button>
+    <br>
+    <br>
+    <input type="checkbox" id="sensorDataCheckbox" checked data-toggle="toggle">
+    <span>
+        Generate sensor data automatically every
+        <input class="input-sm" type="number" id="sensorDataRandomFrom" value="1">
+        to
+        <input class="input-sm" type="number" id="sensorDataRandomTo" value="1">
+        seconds
+    </span>
 </div>
 <br>
 <br>
-<table class="table">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Data</th>
-        <th>Created</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        if (Model.FirstOrDefault()?.SensorDataId.Equals(item.SensorDataId) ?? false)
-        {
-            <tr class="bg-success">
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorDataId.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorData.SensorDataValue.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorData.SensorDataCreated)
-                </td>
-            </tr>
-        }
-        else
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorDataId.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorData.SensorDataValue.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SensorData.SensorDataCreated)
-                </td>
-            </tr>
-        }
-    }
-    </tbody>
-</table>
+<div id="sensorData">
+    @await Component.InvokeAsync("SensorData")
+</div>
 <br>
 <br>

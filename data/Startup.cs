@@ -27,6 +27,7 @@ namespace data
             services.AddSingleton<IGenerateSensorData, SensorDataRepository>();
             services.AddSingleton<IProvideLastSensorDataValue, SensorDataRepository>();
             services.AddSingleton<IStartupTask, EnsureTableTask>();
+            services.AddSingleton<IProvideRandomData, RandomDataProvider>();
             services.AddMvc();
 
             var serviceProvider = services.BuildServiceProvider();

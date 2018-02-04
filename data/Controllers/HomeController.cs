@@ -1,31 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using data.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace data.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProvideSensorData _sensorData;
+        private readonly IHandleDataGeneration _handleDataGeneration;
+        private readonly IProvideRandomData _randomData;
 
-        public HomeController(IProvideSensorData sensorData)
+        public HomeController(IHandleDataGeneration handleDataGeneration, IProvideRandomData randomData)
         {
-            _sensorData = sensorData;
+            _handleDataGeneration = handleDataGeneration;
+            _randomData = randomData;
         }
 
         public async Task<IActionResult> Index()
         {
-            var sensorDataEntities = await _sensorData.ProvideAsync(); 
-            return View(sensorDataEntities);
+            return View();
+        }
+        
+        public async Task<IActionResult> Random()
+        {
+            var data = await _randomData.ProvideAsync();
+            await _handleDataGeneration.GenerateAsync(data);
+            return ViewComponent("SensorData");
         }
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }
