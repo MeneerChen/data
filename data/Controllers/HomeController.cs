@@ -10,22 +10,10 @@ namespace data.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AutoGenerateTask _autoGenerateTask;
-        private readonly IHandleDataGeneration _handleDataGeneration;
-        private readonly IProvideRandomData _randomData;
-
-        public HomeController(IHandleDataGeneration handleDataGeneration, IProvideRandomData randomData,
-            IEnumerable<IStartupTask> startuptasks)
-        {
-            _handleDataGeneration = handleDataGeneration;
-            _randomData = randomData;
-            _autoGenerateTask = startuptasks.FirstOrDefault(x=>x.GetType() == typeof(AutoGenerateTask)) as AutoGenerateTask;
-        }
-
         public async Task<IActionResult> Index()
         {
-            var switchValue = _autoGenerateTask.GetSwitchValue();
-            return View(switchValue);
+            var control = AutoGenerateTask.Control;
+            return View(control);
         }
 
         public IActionResult GetSensorData()
@@ -36,14 +24,14 @@ namespace data.Controllers
         [HttpGet]
         public Guid GetRivision()
         {
-            return _autoGenerateTask.GetRivision();
+            return AutoGenerateTask.Revision;
         }
 
         [HttpPost]
-        public void SetAutoGenerate([FromBody]SetAutoGenerateModel model)
+        public void SetAutoGenerate([FromBody] SetAutoGenerateModel model)
         {
-            _autoGenerateTask.SetRandom(model.FromRandom,model.ToRandom);
-            _autoGenerateTask.Switch(model.SwitchValue);
+            AutoGenerateTask.Control.Enable = model.SwitchValue;
+            AutoGenerateTask.Control.RandomWaitTime = new RandomWaitTime(model.FromRandom, model.ToRandom);
         }
 
         public IActionResult Error()
@@ -57,6 +45,5 @@ namespace data.Controllers
         public bool SwitchValue { get; set; }
         public int FromRandom { get; set; }
         public int ToRandom { get; set; }
-
     }
 }

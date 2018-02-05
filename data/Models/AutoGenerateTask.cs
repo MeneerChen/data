@@ -5,10 +5,6 @@ namespace data.Models
 {
     public class AutoGenerateTask : IStartupTask
     {
-        private static bool _switchValue;
-        private static int _fromSeconds = 60;
-        private static int _toSeconds = 60;
-        private static Guid _rivision = Guid.NewGuid();
         private readonly IHandleDataGeneration _handleDataGeneration;
         private readonly IProvideRandomData _randomData;
 
@@ -18,6 +14,14 @@ namespace data.Models
             _randomData = randomData;
         }
 
+        public static Guid Revision { get; private set; } = Guid.NewGuid();
+
+        public static Control Control { get; set; } = new Control
+        {
+            Enable = true,
+            RandomWaitTime = new RandomWaitTime(2, 2)
+        };
+
         public async Task Run()
         {
 #pragma warning disable 4014
@@ -26,39 +30,17 @@ namespace data.Models
             {
                 while (true)
                 {
-                    if (_switchValue)
+                    if (Control.Enable)
                     {
                         var data = await _randomData.ProvideAsync();
                         await _handleDataGeneration.GenerateAsync(data);
-                        _rivision = Guid.NewGuid();
-                        var random = new Random().Next(_fromSeconds, _toSeconds);
-                        await Task.Delay(random * 1000);
+                        Revision = Guid.NewGuid();
+                        await Task.Delay(Control.RandomWaitTime.Random * 1000);
                     }
 
                     await Task.Delay(500);
                 }
             });
-        }
-
-        public bool GetSwitchValue()
-        {
-            return _switchValue;
-        }
-
-        public void SetRandom(int from, int to)
-        {
-            _fromSeconds = from;
-            _toSeconds = to;
-        }
-
-        public Guid GetRivision()
-        {
-            return _rivision;
-        }
-
-        public void Switch(bool value)
-        {
-            _switchValue = value;
         }
     }
 }

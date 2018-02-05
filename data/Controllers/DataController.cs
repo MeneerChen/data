@@ -9,43 +9,41 @@ namespace data.Controllers
     public class DataController : Controller
     {
         private readonly IHandleDataGeneration _handleDataGeneration;
-        private readonly IProvideRandomData _randomData;
 
-        public DataController(IHandleDataGeneration handleDataGeneration, IProvideRandomData randomData)
+        public DataController(IHandleDataGeneration handleDataGeneration)
         {
             _handleDataGeneration = handleDataGeneration;
-            _randomData = randomData;
         }
         // GET: /<controller>/
         public async Task<IActionResult> Outofbed()
         {
             var data = new SensorDataValue("Outofbed");
             await _handleDataGeneration.GenerateAsync(data);
-            return Redirect("/Home/Index");
+            return ViewComponent("SensorData");
         }
         public async Task<IActionResult> Leftside()
         {
             var data = new SensorDataValue("Leftside");
             await _handleDataGeneration.GenerateAsync(data);
-            return Redirect("/Home/Index");
+            return ViewComponent("SensorData");
         }
         public async Task<IActionResult> Rightside()
         {
             var data = new SensorDataValue("Rightside");
             await _handleDataGeneration.GenerateAsync(data);
-            return Redirect("/Home/Index");
+            return ViewComponent("SensorData");
         }
         public async Task<IActionResult> Back()
         {
             var data = new SensorDataValue("Back");
             await _handleDataGeneration.GenerateAsync(data);
-            return Redirect("/Home/Index");
+            return ViewComponent("SensorData");
         }
         public async Task<IActionResult> Belly()
         {
             var data = new SensorDataValue("Belly");
             await _handleDataGeneration.GenerateAsync(data);
-            return Redirect("/Home/Index");
+            return ViewComponent("SensorData");
         }
 
     }

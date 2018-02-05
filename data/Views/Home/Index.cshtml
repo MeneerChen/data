@@ -1,23 +1,23 @@
-﻿@model bool
+﻿@model data.Models.Control
 @{
     ViewData["Title"] = "Home Page";
 }
 <br>
 <br>
 <div class="container center-block">
-    <button type="button" class="btn btn-danger btn-lg" onclick="var action = function() { location.href = '@Url.Action("Outofbed", "Data")'; };action();">Outofbed</button>
-    <button type="button" class="btn btn-primary btn-lg" onclick="var action = function() { location.href = '@Url.Action("Leftside", "Data")'; };action();">Leftside</button>
-    <button type="button" class="btn btn-success btn-lg" onclick="var action = function() { location.href = '@Url.Action("Rightside", "Data")'; };action();">Rightside</button>
-    <button type="button" class="btn btn-info btn-lg" onclick="var action = function() { location.href = '@Url.Action("Back", "Data")'; };action();">Back</button>
-    <button type="button" class="btn btn-warning btn-lg" onclick="var action = function() { location.href = '@Url.Action("Belly", "Data")'; };action();">Belly</button>
+    <button type="button" class="btn btn-danger btn-lg" onclick="generateOutofbed()">Outofbed</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="generateLeftside()">Leftside</button>
+    <button type="button" class="btn btn-success btn-lg" onclick="generateRightside()">Rightside</button>
+    <button type="button" class="btn btn-info btn-lg" onclick="generateBack()">Back</button>
+    <button type="button" class="btn btn-warning btn-lg" onclick="generateBelly()">Belly</button>
     <br>
     <br>
     <div class="form-inline">
-        <input type="checkbox" id="sensorDataCheckbox" value="@Model" data-toggle="toggle" onchange="setAutoGenerate()">
+        <input type="checkbox" id="sensorDataCheckbox" checked="@Model.Enable" data-toggle="toggle" onchange="setAutoGenerate()"/>
         Generate sensor data automatically every
-        <input class="form-control" type="number" id="sensorDataRandomFrom" value="1" onchange="setAutoGenerate()">
+        <input class="form-control" type="number" id="sensorDataRandomFrom" value="@Model.RandomWaitTime.FromInSeconds" onchange="setAutoGenerate()"/>
         to
-        <input class="form-control" type="number" id="sensorDataRandomTo" value="1" onchange="setAutoGenerate()">
+        <input class="form-control" type="number" id="sensorDataRandomTo" value="@Model.RandomWaitTime.ToInSeconds" onchange="setAutoGenerate()"/>
         seconds
     </div>
 </div>
