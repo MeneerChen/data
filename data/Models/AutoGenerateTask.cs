@@ -19,7 +19,7 @@ namespace data.Models
         public static Control Control { get; set; } = new Control
         {
             Enable = true,
-            RandomWaitTime = new RandomWaitTime(2, 2)
+            RandomWaitTime = new RandomWaitTime(180, 180)
         };
 
         public async Task Run()
